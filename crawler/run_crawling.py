@@ -1,7 +1,9 @@
 import argparse
 from datetime import date, timedelta
+import time
 from crawler_comments import NaverCommentsCrawler
 from utils.base import dump_docs, show_stat
+
 
 def main():
 
@@ -27,11 +29,15 @@ def main():
     for pair in comments_crawler.press_code:
         code, press = pair
 
+        start_time = time.time()
+        print(f"-----start crawling {press} from {begin_date} to {end_date}-----")
         whole_docs = comments_crawler.run_engine(code, begin_date, end_date)
 
         output_path = output_dir
         file_name = f"{press}_{begin_date}_{end_date}"
         dump_docs(whole_docs, output_path, file_name)
+        print("----------------%s seconds ----------------" % round(float(time.time() - start_time), 2))
+        print('\n')
 
 if __name__ == '__main__':
     main()
