@@ -1,4 +1,5 @@
 from typing import Union, List, Tuple
+import time
 
 urlInput = Union[str, List[str], Tuple[str]]
 
@@ -49,13 +50,22 @@ class AbstractCrawler:
         """Keep crawling comments by url in url set"""
         url_set = self._load_url_set(code, start_date, end_date, **kwargs)
         whole_doc = []
-        for title, url in url_set :
-            comments = self._crawling(url, **kwargs)
-            doc = {'url':url, 'comments': comments}
-            if comments != []:
-                whole_doc.append(doc)
+
+        for title, url in url_set:
+            try:
+                comments = self.crawling(url, **kwargs)
+                doc = {'url': url, 'comments': comments}
+                if comments != []:
+                    whole_doc.append(doc)
+            except Exception as ex:
+                print(ex)
+                print("Let me sleep for 30 seconds")
+                time.sleep(30)
+                continue
 
         return whole_doc
+
+
 
     def _load_url_set(self, code, start_date, end_date, **kwargs):
         """load url set"""
