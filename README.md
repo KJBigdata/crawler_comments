@@ -2,8 +2,10 @@
 
 Python 3.7 로 작성되었습니다. 아래의 패키지를 이용합니다.
 
-- beautifulsoup4 >= 4.7.1
-- requiests >= 2.14.2
+- beautifulsoup4==4.9.3
+- bs4==0.0.1
+- fake-useragent==0.1.11
+- requests==2.24.0
 
 설치는 git clone 으로 코드를 받거나 downloads 를 합니다.
 
