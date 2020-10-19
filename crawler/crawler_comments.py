@@ -1,5 +1,5 @@
 from crawler_base import AbstractCrawler
-from utils.base import get_all_date, get_url_list, remove_duplicate
+from utils.base import get_url_list, remove_duplicate
 from parse_comment import get_comments
 
 class NaverCommentsCrawler(AbstractCrawler):
@@ -24,15 +24,14 @@ class NaverCommentsCrawler(AbstractCrawler):
 
         return get_comments(url)
 
-    def _load_url_set(self, code, start_date, end_date):
+    def _load_url_set(self, code, date):
         """
 
         """
-        date_list = get_all_date(start_date, end_date)
-        for date in date_list:
-            for page in range(1, self.max_page):
-                main_url = self.main_url.format(code, date, page)
-                title_url_pair_list = remove_duplicate(get_url_list(main_url))
+
+        for page in range(1, self.max_page):
+            main_url = self.main_url.format(code, date, page)
+            title_url_pair_list = remove_duplicate(get_url_list(main_url))
 
         return title_url_pair_list
 

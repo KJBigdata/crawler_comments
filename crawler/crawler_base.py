@@ -1,5 +1,6 @@
 from typing import Union, List, Tuple
 import time
+from utils.base import get_all_date
 
 urlInput = Union[str, List[str], Tuple[str]]
 
@@ -48,26 +49,25 @@ class AbstractCrawler:
 
     def run_engine(self, code, start_date, end_date, **kwargs):
         """Keep crawling comments by url in url set"""
-        url_set = self._load_url_set(code, start_date, end_date, **kwargs)
+        date_list = get_all_date(start_date, end_date)
         whole_doc = []
-
-        for title, url in url_set:
-            try:
-                comments = self.crawling(url, **kwargs)
-                doc = {'url': url, 'comments': comments}
-                if comments != []:
-                    whole_doc.append(doc)
-            except Exception as ex:
-                print(ex)
-                print("Let me sleep for 30 seconds")
-                time.sleep(30)
-                continue
+        for date in date_list:
+            url_set = self._load_url_set(code, date, **kwargs)
+            for title, url in url_set:
+                try:
+                    comments = self.crawling(url, **kwargs)
+                    doc = {'url': url, 'comments': comments}
+                    if comments != []:
+                        whole_doc.append(doc)
+                except Exception as ex:
+                    print(ex)
+                    print("Let me sleep for 30 seconds")
+                    time.sleep(30)
+                    continue
 
         return whole_doc
 
-
-
-    def _load_url_set(self, code, start_date, end_date, **kwargs):
+    def _load_url_set(self, code, date, **kwargs):
         """load url set"""
 
         raise NotImplementedError
