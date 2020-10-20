@@ -5,6 +5,15 @@ from bs4 import BeautifulSoup
 
 # oid: 언론사ID aid: 뉴스기사ID
 def get_comments(news_url):
+    """It returns parsed comment data crawled
+
+    Args:
+      news_url : news url to crawl
+
+    To use:
+    >>> get_comments(news_url)
+
+    """
     base_url = ''.join(['https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?ticket=news&',
                         'templateId=view_politics&pool=cbox5&lang=ko&country=KR&objectId=news',
                         '{}%2C{}&pageSize={}&page={}&sort={}&initialize=true&useAltSort=true&indexSize=10'])
@@ -40,6 +49,16 @@ def get_comments(news_url):
 
 
 def _get_response(url, headers=None):
+    """It retuns json result of requests response
+
+    Args:
+      url : url to crawl comments in 
+      headers : header info
+
+    To use:
+    >>> _get_response(url)
+
+    """
     try:
         if not headers:
             r = requests.get(url)
@@ -52,9 +71,15 @@ def _get_response(url, headers=None):
     except:
         return {}
 
-
-# oid와 aid 추출 함수
 def _parse_oid_aid(news_url):
+    """It retuns oid and aid from news url
+
+    Args:
+      news url : news url to parse oid(press code) and aid(news id) 
+
+    To use:
+    >>> _parse_oid_aid(news_url)
+    """
     parts = news_url.split('?')[-1].split('&')
     (oid, aid) = (None, None)
     for part in parts:
@@ -66,11 +91,30 @@ def _parse_oid_aid(news_url):
 
 
 def _n_comments(url, news_url):
+    """It retuns number of comments in a news
+
+    Args:
+      url : api url of comment box
+      news_url : news url to refer 
+
+    To use:
+    >>> _n_comments(url, news_url)
+
+    """
     response = _get_response(url, {'Referer': news_url})
     n_comments = response.get('result', {}).get('count', {}).get('comment', 0)
     return n_comments
 
 def _parse_comment(comment_json):
+    """It retuns parsed comment infos
+
+    Args:
+      comment_json : All infos of comment
+
+    To use:
+    >>> _parse_comment(comment_json)
+
+    """
     antipathy_count = comment_json['antipathyCount']
     sympathy_count = comment_json['sympathyCount']
     comment_no = comment_json['commentNo']
