@@ -18,14 +18,27 @@ class NaverCommentsCrawler(AbstractCrawler):
                       ('016', '헤럴드경제'), ('029', '디지털타임스')]
 
     def _crawling(self, url: str):
-        '''
+        """It return parsed_dic with comments from news press
 
-        '''
+        Args:
+            url: specific news url
+
+        Returns:
+            parsed_dic with comments from news press
+
+        """
 
         return get_comments(url)
 
-    def _load_url_set(self, code, date):
-        """
+    def _load_url_set(self, code: str, date: str):
+        """It return list of (title, url) tuples with removed duplicate case
+
+        Args:
+            code : ID of news press
+            date : date to crawl news comments
+
+        Returns:
+            list of (title, url) tuples with removed duplicate case
 
         """
 
