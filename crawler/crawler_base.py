@@ -43,12 +43,28 @@ class AbstractCrawler:
         return output
 
     def _crawling(self, url, **kwargs):
-        """crawling comments in specific url"""
+        """crawling comments in specific url
+        
+        Raises:
+            NotImplementedError: An error occurred when you didn't specify a method
+
+        """
 
         raise NotImplementedError
 
-    def run_engine(self, code, start_date, end_date, **kwargs):
-        """Keep crawling comments by url in url set"""
+    def run_engine(self, code: str, start_date: str, end_date: str, **kwargs):
+
+        """Keep crawling comments by url in url set
+
+        Args:
+            code: a string, ID of news press
+            start_date : start date of crawling news comments
+            end_date : end date of crawling news comments
+
+        Returns:
+            a list of dictionary(url, comments)
+
+        """
         date_list = get_all_date(start_date, end_date)
         whole_doc = []
         for date in date_list:
@@ -68,6 +84,11 @@ class AbstractCrawler:
         return whole_doc
 
     def _load_url_set(self, code, date, **kwargs):
-        """load url set"""
+        """load url set
+        
+        Raises:
+            NotImplementedError: An error occurred when you didn't specify a method
+
+        """
 
         raise NotImplementedError
